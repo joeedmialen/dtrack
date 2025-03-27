@@ -34,6 +34,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'auth' => \App\Filters\AuthFilter::class,
     ];
 
     /**
@@ -69,6 +70,20 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'auth' => ['except' => ['/auth/login', 
+            '/login', 
+            'login', 
+            'signup', 
+            'signup_submit', 
+            'send_email_verification_code', 
+            'verify_verification_code', 
+            'forgot_password',
+            'forgot_password_submit',
+            'qrcode',
+            'qrcode/(:any)',
+            'mark_read_notification'
+            ]], // Apply 'auth' filter to all routes except 'login'
+
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',

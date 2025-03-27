@@ -28,22 +28,22 @@ class Email extends BaseConfig
     /**
      * SMTP Server Hostname
      */
-    public string $SMTPHost = '';
+    public string $SMTPHost = 'smtp.hostinger.com';
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = '';
+    public string $SMTPUser = 'admin@dtrack.dama.website';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = '';
+    public string $SMTPPass = '#Gwapokatama2x';
 
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 25;
+    public int $SMTPPort = 587;
 
     /**
      * SMTP Timeout (in seconds)

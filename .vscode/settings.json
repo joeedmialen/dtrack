@@ -1,0 +1,8 @@
+{
+    "git.alwaysShowStagedChangesResourceGroup": false,
+    "git.autoStash": true,
+    "explorer.excludeGitIgnore": true,
+    "files.exclude": {
+        "**/.git": false
+    }
+}
