@@ -66,12 +66,6 @@
                     <!-- <span class="badge bg-success">300</span> -->
                      <div style="font-size: 20px; margin-top:-5px"><i class="fas  fa-arrow-down"></i> <i class="fas  fa-qrcode"></i> </div>Receive Scan
                 </a>
-                <a href="<?= base_url('release_doc_by_qrcode') ?>" class="btn btn-app bg-danger" title="Send out document to track.">
-                    <!-- <span class="badge bg-success">300</span> -->
-                    <div style="font-size: 20px; margin-top:-5px"><i class="fas  fa-arrow-up"></i> <i class="fas  fa-qrcode"></i> </div>Release Scan
-
-                </a>
-    
             </div>
         </div>
     </div><!-- /.container-fluid -->
