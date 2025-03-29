@@ -38,46 +38,26 @@
                 </div>
             <?php else : ?>
                 <!--  -->
-                <?php if ((($is_last_user_released === false) && ($is_me_last_receive === false)) || $is_last_user_released === '') : ?>
-                    <script>
-                        Swal.fire({
-                            title: 'Document not ready!',
-                            html: ' Document is not yet ready for new transaction.',
-                            icon: 'error',
-                            allowOutsideClick: false,
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Ok'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "<?= base_url() ?>";//go to home
-                            } else {
-
-                            }
-                        });
-                    </script>
-
-                <?php else : ?>
-                    <?php if (($is_last_user_released === false) && ($is_me_last_receive === true)) : ?>
+                    <?php if ($is_me_last_receive === true): ?>
                         <script>
                             Swal.fire({
                                 title: '',
-                                html: 'What would like like to do?',
+                                html: 'This document is in your Onhand list.',
                                 icon: 'question',
                                 allowOutsideClick: false,
-                                showCancelButton: true,
+                                showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Release Document',
+                                confirmButtonText: 'Go to Home',
                                cancelButtonText: 'See Document History'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "<?= base_url('confirm_release_qrcode_data') ?>/<?= $document['document_code']; ?>";
-                                } else {
                                     window.location.href = "<?= base_url('timeline_view') ?>/<?= $document['document_code']; ?>";
+                                } else {
+                                    window.location.href = "<?= base_url('/') ?>";
                                 }
                             });
                         </script>
-                    <?php elseif ($is_last_user_released === true) : ?>
+                    <?php else  : ?>
                         <script>
                             Swal.fire({
                                 title: '',
@@ -100,7 +80,7 @@
 
                     <?php endif; ?>
 
-                <?php endif; ?>
+                
             <?php endif; ?>
 
 

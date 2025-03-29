@@ -129,7 +129,6 @@ class Home extends BaseController
             'document' => $document,
             'receiveLog' => $receiveLog,
             'is_me_last_receive' => '',
-            'is_last_user_released' => '',
             'code' => $code
 
 
@@ -148,25 +147,25 @@ class Home extends BaseController
             if (count($releaseLog) === 0) {
                 if ($receiveLog[0]['user_id'] == $user_id) {
                     $data['is_me_last_receive'] = true;
-                    $data['is_last_user_released'] = false;
+                   
                 } else {
                     $data['is_me_last_receive'] = false;
-                    $data['is_last_user_released'] = false;
+                   
                 }
             } else {
 
                 if (($releaseLog[0]['releaselog_timestamp'] < $receiveLog[0]['receivelog_timestamp']) && $receiveLog[0]['user_id'] == $user_id) {
                     $data['is_me_last_receive'] = true;
-                    $data['is_last_user_released'] = false;
+                   
                 } else if (($releaseLog[0]['releaselog_timestamp'] > $receiveLog[0]['receivelog_timestamp']) && $receiveLog[0]['user_id'] == $user_id) {
                     $data['is_me_last_receive'] = true;
-                    $data['is_last_user_released'] = true;
+                   
                 } else if (($releaseLog[0]['releaselog_timestamp'] < $receiveLog[0]['receivelog_timestamp']) && $receiveLog[0]['user_id'] !== $user_id) {
                     $data['is_me_last_receive'] = false;
-                    $data['is_last_user_released'] = false;
+                  
                 } else if (($releaseLog[0]['releaselog_timestamp'] > $receiveLog[0]['receivelog_timestamp']) && $releaseLog[0]['user_id'] !== $user_id) {
                     $data['is_me_last_receive'] = false;
-                    $data['is_last_user_released'] = true;
+                  
                 }
             }
         }
@@ -357,7 +356,6 @@ class Home extends BaseController
         // 
         $document = $docModel->get_document_by_code($code);
         $receiveLog = $receiveLogModel->get_by_code($code);
-        $releaseLog = $releaseLogModel->get_by_code($code);
         $user = $userModel->get_user_by_id($user_id);
 
         $data = [
@@ -370,47 +368,28 @@ class Home extends BaseController
             'is_me_last_receive' => '',
             'is_last_user_released' => '',
             'code' => $code
-
-
-
-
         ];
+
         // check if the document exists
         if ($document == null) {
             $data['is_doc_null'] = true;
+            return view('qrcode', $data);
         } else {
             // if document has record in receive table
             $document_owner =  $userModel->get_user_by_id($document['user_id'])['user_username'];
             $data['document_owner'] = $document_owner;
 
             $data['lastuser_data'] =  $userModel->get_user_by_id($receiveLog[0]['user_id']);
-            if (count($releaseLog) === 0) {
+           
                 if ($receiveLog[0]['user_id'] == $user_id) {
-                    $data['is_me_last_receive'] = true;
-                    $data['is_last_user_released'] = false;
+                    return view('qrcode', $data);
                 } else {
-                    $data['is_me_last_receive'] = false;
-                    $data['is_last_user_released'] = false;
+                    return view('confirm_receive_qrcode_data', $data);
                 }
-            } else {
-
-                if (($releaseLog[0]['releaselog_timestamp'] < $receiveLog[0]['receivelog_timestamp']) && $receiveLog[0]['user_id'] == $user_id) {
-                    $data['is_me_last_receive'] = true;
-                    $data['is_last_user_released'] = false;
-                } else if (($releaseLog[0]['releaselog_timestamp'] > $receiveLog[0]['receivelog_timestamp']) && $receiveLog[0]['user_id'] == $user_id) {
-                    $data['is_me_last_receive'] = true;
-                    $data['is_last_user_released'] = true;
-                } else if (($releaseLog[0]['releaselog_timestamp'] < $receiveLog[0]['receivelog_timestamp']) && $receiveLog[0]['user_id'] !== $user_id) {
-                    $data['is_me_last_receive'] = false;
-                    $data['is_last_user_released'] = false;
-                } else if (($releaseLog[0]['releaselog_timestamp'] > $receiveLog[0]['receivelog_timestamp']) && $releaseLog[0]['user_id'] !== $user_id) {
-                    $data['is_me_last_receive'] = false;
-                    $data['is_last_user_released'] = true;
-                }
-            }
+      
         }
 
-        return view('confirm_receive_qrcode_data', $data);
+       
     }
     public function confirm_release_qrcode_data($code): string
     {
