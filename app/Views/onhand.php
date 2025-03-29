@@ -93,11 +93,7 @@
                                                                     <td><?= $value['user_username']; ?></td>
 
                                                                     <td class=""><?= convertPhpElapsedTime($date->diff($dateNow)->format('%yy, %dd, %hhr, %imin, %ssec')); ?></td>
-                                                                    <td><span onclick="onclick_release(event)"
-                                                                            data-doc_id="<?= $value['document_id']; ?>"
-
-                                                                            data-doc_code="<?= $value['document_code']; ?>"
-                                                                            data-doc_name="<?= $value['document_name']; ?>" class="btn btn-primary border  text-light"><i class="fas  fa-paper-plane"></i></i> Release</span>
+                                                                    <td>
 
                                                                         <?php if ($value['document_delete_allowed'] != 1): ?>
                                                                             <!-- show delete button -->
@@ -201,128 +197,6 @@
     </script>
 
     <script>
-        function onclick_release(e) {
-            e.stopPropagation(); // stop the propagation of events to parents
-            var doc_code = e.currentTarget.dataset.doc_code;
-            var url = "<?= base_url('submit_delete_doc'); ?>";
-
-            // Highlight the row
-            var rowElement = e.currentTarget.parentNode.parentNode;
-            if (rowElement) {
-                rowElement.classList.add('bg-warning');
-            }
-            var doc_code = e.target.dataset.doc_code;
-            var doc_name = e.target.dataset.doc_name;
-            var doc_id = e.target.dataset.doc_id;
-            var doc_detail = `
-            <table class="table">
-                <tr>
-                    <td>
-                        Name:
-                    <td>
-                    <td>
-                       <b> ` + doc_name + `</b>
-                    <td>
-                </tr>
-
-                <tr>
-                    <td>
-                        Tracking Code:
-                    <td>
-                    <td>
-                    <b> ` + doc_code + `</b>
-                    <td>
-                </tr>
-
-
-
-            </table>
-            
-            `;
-
-
-            Swal.fire({
-                title: 'Release?',
-                html: 'Are you sure you want to release this document?' + doc_detail,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
-
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    async function sendoutDoc() {
-                        const {
-                            value: myinputdata
-                        } = await Swal.fire({
-                            html: '<div class="border p-2"> <b>' + doc_name + '</b><hr><b>' + doc_code + '</b></div>',
-                            title: 'Release Document',
-                            input: 'text',
-                            inputLabel: 'Remarks/Details',
-                            allowOutsideClick: false,
-                            inputAttributes: {
-                                required: 'required', // Add 'required' attribute to the input element
-                            },
-                            inputPlaceholder: '...',
-                            confirmButtonText: 'Finish',
-                            showCancelButton: true,
-                            confirmButtonColor: '#00913a',
-                            showLoaderOnConfirm: true
-                        })
-                        if (myinputdata) {
-                            //return data as myinputdata
-                            var url = "<?= base_url('add_releaselog'); ?>";
-
-                            $.ajax({
-                                type: "post",
-                                url: url,
-                                data: {
-                                    doc_id: doc_id,
-                                    remark: myinputdata,
-                                    track_type: "release"
-
-                                },
-                                success: function(response) {
-                                    var data = JSON.parse(response);
-                                    Swal.fire(
-                                        'Officially released!',
-                                        data.message,
-                                        'success'
-                                    ).then((result) => {
-                                        if (result.isConfirmed) {
-                                            // window.location.reload();
-                                            if (rowElement) {
-                                                setTimeout(() => {
-                                                    rowElement.classList.add('disappearing-element-scale-down'); //animate dissapperance in the row
-                                                }, 500);
-                                            }
-                                        }
-                                    });
-                                },
-                                error: function(xhr, status, error) {
-                                    Swal.fire(
-                                        'Error',
-                                        error,
-                                        'error'
-                                    )
-
-                                }
-                            });
-                        }
-                    }
-                    sendoutDoc();
-                } else {
-                    // Remove the highlight consistently
-                    if (rowElement) {
-                        rowElement.classList.remove('bg-warning');
-                    }
-                }
-            })
-
-        }
-
 
         function onclick_delete(e) {
             e.stopPropagation(); // stop the propagation of events to parents

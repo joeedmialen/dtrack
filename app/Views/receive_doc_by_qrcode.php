@@ -108,6 +108,7 @@
 </script>
 <script>
     var hasSounded = false;
+    var stopScanning = false;
 
     function extractDocumentCode(url) {
         var urlParts = String(url).split('/');
@@ -118,6 +119,7 @@
                 generateTone(440, 200); // frequency in Hz, duration in milliseconds
             }
             hasSounded = true;
+            stopScanning = true;
             window.location.href = "<?= base_url() ?>confirm_receive_qrcode_data/" + code;
 
         }
@@ -155,6 +157,9 @@
         });
 
         function tick() {
+            if (stopScanning) {
+                return;  // Stop scanning once the QR code is found and extracted
+            }
             //loadingMessage.innerText = "⌛ Scanning..."
             if (video.readyState === video.HAVE_ENOUGH_DATA) {
                 canvasElement.hidden = false;
